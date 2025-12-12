@@ -44,15 +44,15 @@ class HabitTracker:
     def prompt_activity(self, activity_name, options):
         if options == "commits":
             while True:
-                response = input(f"{activity_name} - Commit counts? ").strip()
+                response = input(f"{activity_name} - Commit counts (0 if not done)? ").strip()
                 if response.isdigit() or response == "0":
                     return response
                 print("Please enter a valid number of commits.")
         else:
-            options_str = "/".join(str(opt) for opt in options)
+            options_str = "0/" + "/".join(str(opt) for opt in options)
             while True:
                 response = input(f"{activity_name} {options_str} Min? ").strip()
-                if response in [str(opt) for opt in options]:
+                if response == "0" or response in [str(opt) for opt in options]:
                     return response
                 print(f"Please enter one of: {options_str}")
 
