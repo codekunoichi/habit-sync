@@ -33,6 +33,7 @@ actual_inputs = [
     "90",   # TV Binging
     "30",   # Reading Non-Fiction
     "20",   # Painting
+    "20",   # Journaling
     "30",   # Blogging
     "0"     # Github Streak - not done
 ]
