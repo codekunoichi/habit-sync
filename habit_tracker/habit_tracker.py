@@ -33,7 +33,8 @@ class HabitTracker:
             "Leisure": [
                 {"name": "TV Binging", "options": [60, 90, 120, 360]},
                 {"name": "Reading Non-Fiction", "options": [30, 60, 90]},
-                {"name": "Painting", "options": [20, 30, 40]}
+                {"name": "Painting", "options": [20, 30, 40]},
+                {"name": "Journaling", "options": [10, 20, 30]}
             ],
             "Community": [
                 {"name": "Blogging", "options": [20, 30, 40]},
