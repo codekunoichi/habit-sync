@@ -1,3 +1,4 @@
+import argparse
 from datetime import datetime
 from pathlib import Path
 
@@ -57,11 +58,15 @@ class HabitTracker:
                     return response
                 print(f"Please enter one of: {options_str}")
 
-    def run_tracker(self):
-        today_date = datetime.now().strftime("%Y-%m-%d")
+    def run_tracker(self, target_date=None):
+        if target_date:
+            date_str = target_date
+        else:
+            date_str = datetime.now().strftime("%Y-%m-%d")
+
         pillar_data = {pillar: [] for pillar in self.pillar_files.keys()}
 
-        print("=== Daily Habit Tracker ===\n")
+        print(f"=== Daily Habit Tracker ({date_str}) ===\n")
 
         for pillar, activities in self.activities.items():
             print(f"\n--- {pillar} ---")
@@ -84,7 +89,7 @@ class HabitTracker:
 
                 pillar_data[pillar].append(f"{activity_name}: {value} {unit}")
 
-        self.write_to_files(today_date, pillar_data)
+        self.write_to_files(date_str, pillar_data)
         print("\n✓ Habits tracked successfully!")
 
     def write_to_files(self, date, pillar_data):
@@ -96,9 +101,37 @@ class HabitTracker:
                 f.write(entry)
 
 
+def parse_date(date_input):
+    """Parse date from MMDDYYYY format to YYYY-MM-DD format."""
+    try:
+        date_obj = datetime.strptime(date_input, "%m%d%Y")
+        return date_obj.strftime("%Y-%m-%d")
+    except ValueError:
+        print(f"Error: Invalid date format '{date_input}'. Expected format: MMDDYYYY (e.g., 12112024)")
+        return None
+
+
 def main():
+    parser = argparse.ArgumentParser(
+        description="Daily Habit Tracker - Track your habits across 5 life pillars"
+    )
+    parser.add_argument(
+        "date",
+        nargs="?",
+        default=None,
+        help="Optional date in MMDDYYYY format (e.g., 12112024). If not provided, uses today's date."
+    )
+
+    args = parser.parse_args()
+
+    target_date = None
+    if args.date:
+        target_date = parse_date(args.date)
+        if target_date is None:
+            return
+
     tracker = HabitTracker()
-    tracker.run_tracker()
+    tracker.run_tracker(target_date)
 
 
 if __name__ == "__main__":
