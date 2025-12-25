@@ -18,6 +18,7 @@ The pillar-based approach ensures balanced personal development across technical
 - **5 Life Pillars**: AIEngineer, Health, Home, Leisure, Community
 - **14 Activities** tracked daily with specific time/session options
 - **Flexible Tracking**: Use "0" to indicate activities not done
+- **Backfilling Support**: Log habits for past dates using the optional date argument
 - **Simple Text Storage**: Each pillar has its own `.txt` file for easy review
 - **Daily Logging**: Appends entries with date and all activities on one line per pillar
 - **No External Dependencies**: Runs entirely on standard Python libraries
@@ -98,7 +99,11 @@ source venv/bin/activate  # On macOS/Linux
 
 2. **Run the tracker**:
 ```bash
+# For today's date
 python habit_tracker.py
+
+# For a specific past date (MMDDYYYY format)
+python habit_tracker.py 12112024
 ```
 
 3. **Follow the prompts** for each activity:
@@ -108,6 +113,22 @@ python habit_tracker.py
    - Press Enter after each input
 
 4. **Complete all prompts** to save your daily log
+
+### Backfilling Past Dates
+
+If you miss a day or want to log habits for a previous date:
+
+```bash
+# Example: Log habits for December 11, 2024
+python habit_tracker.py 12112024
+
+# The date format is MMDDYYYY
+# MM = month (01-12)
+# DD = day (01-31)
+# YYYY = year (e.g., 2024)
+```
+
+The tracker will display the target date in the header (e.g., "=== Daily Habit Tracker (2024-12-11) ===") so you can confirm you're logging for the correct date.
 
 ### What Happens When You Run
 
@@ -135,7 +156,10 @@ python test_run.py
 ```
 
 3. **What the test does**:
-   - Simulates 14 inputs (one for each activity)
+   - Runs two tests automatically:
+     - **Test 1**: Logs habits for today's date (no date argument)
+     - **Test 2**: Logs habits for a past date (12/10/2024) to validate backfilling
+   - Simulates 14 inputs for each test (one for each activity)
    - Includes some "0" values to test "not done" functionality
    - Creates entries in all 5 pillar files
    - Displays the same prompts as the interactive version
@@ -143,11 +167,11 @@ python test_run.py
 
 4. **Verify the test results**:
 ```bash
-# View the latest entries in all pillar files
-tail -1 data/*.txt
+# View the latest two entries in all pillar files
+tail -2 data/*.txt
 ```
 
-You should see entries with today's date showing the test values.
+You should see entries for both today's date and 2024-12-10 showing the test values.
 
 ### Manual Testing
 
@@ -210,10 +234,12 @@ YYYY-MM-DD | Activity1: value unit | Activity2: value unit | ...
 
 ## Example Run
 
-### Interactive Session
+### Interactive Session (Today's Date)
 
 ```
-=== Daily Habit Tracker ===
+$ python habit_tracker.py
+
+=== Daily Habit Tracker (2025-12-25) ===
 
 --- AIEngineer ---
 Grokking ML 0/30/60 Min? 30
@@ -238,6 +264,22 @@ Journaling 0/10/20/30 Min? 20
 --- Community ---
 Blogging 0/20/30/40 Min? 30
 Github Streak - Commit counts (0 if not done)? 5
+
+✓ Habits tracked successfully!
+```
+
+### Backfilling Session (Past Date)
+
+```
+$ python habit_tracker.py 12112024
+
+=== Daily Habit Tracker (2024-12-11) ===
+
+--- AIEngineer ---
+Grokking ML 0/30/60 Min? 60
+Fast.ai DL 0/30/60 Min? 30
+
+[... rest of prompts ...]
 
 ✓ Habits tracked successfully!
 ```
@@ -275,6 +317,7 @@ After the above session, the data files would contain:
 
 - **Set a reminder** to run the tracker at the same time each day (e.g., before bed)
 - **Be honest** with "0" entries - they help identify patterns in what you're skipping
+- **Backfill missed days** using the date argument (e.g., `python habit_tracker.py 12232024`)
 - **Review your logs** weekly by reading the pillar files to spot trends
 - **Adjust time increments** if needed by modifying the activity options in the code
 - **Keep backups** of your `data/` directory to preserve your tracking history
